@@ -1,0 +1,13 @@
+image_id,sex,localization,age
+ISIC_0024311,female,back,75.0
+ISIC_0024317,female,abdomen,35.0
+ISIC_0024321,male,lower extremity,35.0
+ISIC_0024323,male,lower extremity,50.0
+ISIC_0024330,male,lower extremity,40.0
+ISIC_0024331,male,lower extremity,65.0
+ISIC_0024333,male,lower extremity,85.0
+ISIC_0024345,male,back,85.0
+ISIC_0024347,female,upper extremity,25.0
+ISIC_0024357,female,trunk,45.0
+ISIC_0024359,male,back,40.0
+ISIC_0024363,male,back,40.0

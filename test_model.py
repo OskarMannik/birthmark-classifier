@@ -1,65 +1,113 @@
+import os
 import torch
 from torchvision import transforms
 from PIL import Image
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
 import pandas as pd
-import os
-import matplotlib.pyplot as plt
+from model_def import MultimodalModel  # Ensure your model definition is imported
 
 # File paths
-model_path = "best_multimodal_model.pth"
-metadata_path = "HAM10000_metadata.csv"
-image_paths = [
-    "resized_test_images/ISIC_0024321.jpg",
-    "resized_test_images/ISIC_0024311.jpg",
-    "resized_test_images/ISIC_0024317.jpg",
-]
+model_path = "best_multimodal_model.pth"       # Path to your trained model
+metadata_path = "test_metadata.csv"            # Path to your test metadata
+images_folder = "resized_test_images/"         # Folder containing test images
+
+# Label map for interpretation (use your label mapping)
+label_map = {
+    0: 'bkl',
+    1: 'nv',
+    2: 'df',
+    3: 'mel',
+    4: 'vasc',
+    5: 'bcc',
+    6: 'akiec'
+}
 
 # Load the metadata
 metadata = pd.read_csv(metadata_path)
 
-# Define transformation for the images (same as training/validation)
+# Verify required columns in metadata
+required_columns = ['image_id', 'sex', 'localization', 'age']
+if not all(col in metadata.columns for col in required_columns):
+    raise ValueError(f"Metadata must contain the following columns: {required_columns}")
+
+# Determine unique values for categorical columns
+unique_sex = metadata['sex'].nunique()
+unique_localization = metadata['localization'].nunique()
+
+# Dynamically determine the number of additional placeholder features
+total_categorical_features = unique_sex + unique_localization
+expected_total_features = 19  # Total features used during training
+placeholder_features_needed = expected_total_features - (1 + total_categorical_features)  # Subtract 1 for 'age'
+
+# Add only the required placeholder features
+for i in range(4, 4 + placeholder_features_needed):
+    col_name = f'feature_{i}'
+    if col_name not in metadata.columns:
+        metadata[col_name] = 0  # Add placeholder values
+
+# Define tabular features
+tabular_features = ['age', 'sex', 'localization'] + [f'feature_{i}' for i in range(4, 4 + placeholder_features_needed)]
+
+# Preprocessing pipeline
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', StandardScaler(), ['age'] + [f'feature_{i}' for i in range(4, 4 + placeholder_features_needed)]),
+        ('cat', OneHotEncoder(), ['sex', 'localization'])
+    ]
+)
+
+# Preprocess the tabular data
+tabular_features_data = preprocessor.fit_transform(metadata[tabular_features])
+tabular_tensor = torch.tensor(tabular_features_data, dtype=torch.float32).to('cpu')
+
+# Define image transformations
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),  # Resize to 224x224
-    transforms.ToTensor(),          # Convert to tensor
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  # Normalize
+    transforms.Resize((224, 224)),  # Resize to match training dimensions
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
+# Preprocess images
+image_tensors = []
+for image_id in metadata['image_id']:
+    image_path = os.path.join(images_folder, f"{image_id}.jpg")
+    if not os.path.exists(image_path):
+        raise FileNotFoundError(f"Image not found: {image_path}")
+    image = Image.open(image_path).convert('RGB')
+    image_tensor = transform(image).unsqueeze(0)  # Add batch dimension
+    image_tensors.append(image_tensor)
+
+# Combine image tensors
+image_tensor = torch.cat(image_tensors)
+
 # Load the model
+num_tabular_features = tabular_tensor.shape[1]  # Automatically calculate tabular features
+num_classes = len(label_map)  # Number of output classes
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = torch.load(model_path, map_location=device)
+model = MultimodalModel(num_tabular_features, num_classes).to(device)
+model.load_state_dict(torch.load(model_path, map_location=device))
 model.eval()
 
-# Prepare the tabular data for the images
-# Assuming metadata has a column `image_id` that matches the image filenames and
-# tabular features needed for the model are all numeric columns
-tabular_columns = metadata.select_dtypes(include='number').columns
-tabular_data = metadata[metadata['image_id'].isin([os.path.basename(p).split('.')[0] for p in image_paths])]
-tabular_features = tabular_data[tabular_columns].values
+# Move data to device
+image_tensor = image_tensor.to(device)
+tabular_tensor = tabular_tensor.to(device)
 
-# Process each image and run predictions
-results = []
+# Run inference
+with torch.no_grad():
+    outputs = model(image_tensor, tabular_tensor)
+    _, predicted_classes = torch.max(outputs, 1)
 
-for idx, image_path in enumerate(image_paths):
-    # Open and preprocess the image
-    image = Image.open(image_path).convert('RGB')
-    image_tensor = transform(image).unsqueeze(0).to(device)
-    
-    # Get the corresponding tabular data
-    tabular_tensor = torch.tensor(tabular_features[idx], dtype=torch.float32).unsqueeze(0).to(device)
-    
-    # Run the model
-    with torch.no_grad():
-        output = model(image_tensor, tabular_tensor)
-        _, predicted_class = torch.max(output, 1)
-        results.append((os.path.basename(image_path), predicted_class.item()))
+# Interpret predictions
+predicted_labels = [label_map[class_id.item()] for class_id in predicted_classes]
 
-results
+# Add predictions to metadata
+metadata['predicted_label'] = predicted_labels
 
+# Save results
+metadata.to_csv("test_results.csv", index=False)
+print("Results saved to test_results.csv")
 
-
-for idx, (image_name, predicted_class) in enumerate(results):
-    image = Image.open(image_paths[idx])
-    plt.imshow(image)
-    plt.title(f"Image: {image_name}\nPredicted Class: {predicted_class}")
-    plt.axis("off")
-    plt.show()
+# Display results
+print(metadata[['image_id', 'age', 'sex', 'localization', 'predicted_label']])
