@@ -1,13 +1,18 @@
-image_id,sex,localization,age,feature_4,feature_5,feature_6,feature_7,feature_8,feature_9,feature_10,feature_11,feature_12,feature_13,feature_14,predicted_label
-ISIC_0024311,female,back,75.0,0,0,0,0,0,0,0,0,0,0,0,nv
-ISIC_0024317,female,abdomen,35.0,0,0,0,0,0,0,0,0,0,0,0,nv
-ISIC_0024321,male,lower extremity,35.0,0,0,0,0,0,0,0,0,0,0,0,nv
-ISIC_0024323,male,lower extremity,50.0,0,0,0,0,0,0,0,0,0,0,0,nv
-ISIC_0024330,male,lower extremity,40.0,0,0,0,0,0,0,0,0,0,0,0,df
-ISIC_0024331,male,lower extremity,65.0,0,0,0,0,0,0,0,0,0,0,0,bcc
-ISIC_0024333,male,lower extremity,85.0,0,0,0,0,0,0,0,0,0,0,0,bkl
-ISIC_0024345,male,back,85.0,0,0,0,0,0,0,0,0,0,0,0,bcc
-ISIC_0024347,female,upper extremity,25.0,0,0,0,0,0,0,0,0,0,0,0,nv
-ISIC_0024357,female,trunk,45.0,0,0,0,0,0,0,0,0,0,0,0,nv
-ISIC_0024359,male,back,40.0,0,0,0,0,0,0,0,0,0,0,0,nv
-ISIC_0024363,male,back,40.0,0,0,0,0,0,0,0,0,0,0,0,nv
+image_id,sex,localization,age,feature_4,feature_5,feature_6,feature_7,feature_8,feature_9,feature_10,feature_11,feature_12,feature_13,predicted_label
+ISIC_0024311,female,back,75.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024317,female,abdomen,35.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024321,male,lower extremity,35.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024323,male,lower extremity,50.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024330,male,lower extremity,40.0,0,0,0,0,0,0,0,0,0,0,bcc
+ISIC_0024331,male,lower extremity,65.0,0,0,0,0,0,0,0,0,0,0,bcc
+ISIC_0024333,male,lower extremity,85.0,0,0,0,0,0,0,0,0,0,0,bkl
+ISIC_0024345,male,back,85.0,0,0,0,0,0,0,0,0,0,0,akiec
+ISIC_0024347,female,upper extremity,25.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024357,female,trunk,45.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024359,male,back,40.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024363,male,back,40.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024626,male,back,70.0,0,0,0,0,0,0,0,0,0,0,bkl
+ISIC_0024602,female,face,75.0,0,0,0,0,0,0,0,0,0,0,bcc
+ISIC_0024550,male,lower extremity,75.0,0,0,0,0,0,0,0,0,0,0,bcc
+ISIC_0024592,female,abdomen,40.0,0,0,0,0,0,0,0,0,0,0,nv
+ISIC_0024573,male,face,85.0,0,0,0,0,0,0,0,0,0,0,bcc
