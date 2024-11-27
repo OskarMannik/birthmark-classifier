@@ -11,3 +11,10 @@ HAM_0003121,ISIC_0024347,nv,follow_up,25.0,female,upper extremity
 HAM_0005676,ISIC_0024357,nv,follow_up,45.0,female,trunk
 HAM_0001112,ISIC_0024359,nv,follow_up,40.0,male,back
 HAM_0004534,ISIC_0024363,nv,histo,40.0,male,back
+
+
+ISIC_0024626,bkl,histo,70.0,male,back
+ISIC_0024602,bkl,consensus,75.0,female,face
+ISIC_0024550,bcc,histo,75.0,male,lower extremity
+ISIC_0024592,bkl,histo,40.0,female,abdomen
+ISIC_0024573,bcc,histo,85.0,male,face
