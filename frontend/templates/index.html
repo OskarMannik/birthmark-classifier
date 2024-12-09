@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Skin Lesion Classification</h1>
+    
+    <form id="prediction-form" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="image">Choose an image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <div id="image-preview"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="0" max="120" value="30" required>
+        </div>
+
+        <div class="form-group">
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="localization">Localization:</label>
+            <select id="localization" name="localization" required>
+                {% for loc in localizations %}
+                <option value="{{ loc }}">{{ loc|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="results" class="hidden">
+        <h2>Results</h2>
+        <p id="prediction"></p>
+        <div id="probabilities"></div>
+    </div>
+</div>
+{% endblock %} 
