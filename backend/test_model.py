@@ -5,7 +5,7 @@ from PIL import Image
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 import pandas as pd
-from model_def import MultimodalModel  # Ensure your model definition is imported
+from multimodalmodel import MultimodalModel  # Ensure your model definition is imported
 
 # File paths
 model_path = "./../models/best_multimodal_model.pth"       # Path to your trained model
