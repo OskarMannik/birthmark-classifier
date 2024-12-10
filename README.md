@@ -68,6 +68,34 @@ Frameworks Used
 - **Frameworks**: TensorFlow/Keras, Pandas, NumPy, Scikit-learn.  
 
 ---
+### EfficientNetB0 Model Overview
+
+- **Inputs**: Image `(224, 224, 3)` via EfficientNetB0, Metadata via DNN.  
+- **Architecture**: Pretrained EfficientNetB0, Flatten, 2 dense layers (DNN), 3 fusion layers for combined features.  
+- **Hyperparameters**: Adam (1e-4), Sparse Categorical Crossentropy, 20 epochs, batch size 16, class weights applied.  
+- **Results**: Accuracy ~73.16%, Loss ~1.6875.  
+- **Frameworks**: TensorFlow/Keras, Pandas, NumPy, Matplotlib.  
+
+---
+### CNN Model with Undersampling Overview
+
+- **Inputs**: Image `(228, 228, 3)` via CNN, Metadata via DNN.  
+- **Architecture**: 3 Conv2D layers + GlobalPooling (CNN), 2 Dense layers (DNN), 2 fusion layers for combined features.  
+- **Hyperparameters**: Adam, Categorical Crossentropy, 20 epochs, batch size 32.  
+- **Results**: Accuracy ~58.44%, Loss ~1.0152.  
+- **Frameworks**: TensorFlow/Keras, Pandas, NumPy, Matplotlib.  
+
+---
+### CNN Model with SMOTE and Data Augmentation Overview
+
+- **Inputs**: Image `(128, 128, 3)` via CNN, Metadata via DNN.  
+- **Architecture**: 3 Conv2D layers + GlobalPooling (CNN), 2 Dense layers (DNN), 2 fusion layers for combined features.  
+- **Hyperparameters**: Adam, Categorical Crossentropy, 20 epochs, batch size 32.  
+- **Techniques**: SMOTE for oversampling, ImageDataGenerator for augmentation.  
+- **Results**: Accuracy ~78.00%, Loss ~0.5915.  
+- **Frameworks**: TensorFlow/Keras, Pandas, NumPy, Matplotlib.  
+
+---
 Resnet, Efficientnet,CNN from scratch
 Image preprocessing (size)
 Different optimizers and parameters
