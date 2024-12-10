@@ -96,6 +96,16 @@ Frameworks Used
 - **Frameworks**: TensorFlow/Keras, Pandas, NumPy, Matplotlib.  
 
 ---
+### Data Visualization Overview
+
+- **Visualizations**:  
+  - Distribution plots for lesion types, gender, age, and localization.  
+  - Crosstabs and boxplots for diagnosis vs. age, gender, and localization.  
+  - Pie chart for lesion type percentage distribution.  
+
+- **Frameworks**: Matplotlib, Seaborn, Pandas.  
+
+---
 Resnet, Efficientnet,CNN from scratch
 Image preprocessing (size)
 Different optimizers and parameters
