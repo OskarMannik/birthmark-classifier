@@ -8,26 +8,16 @@ Skin cancer affects thousands of individuals each year, with over 1,000 cases re
 
 ## **Approaches we used**
 
-### Multimodal Skin Cancer Classification Model Overview
+### Multimodal Skin Cancer Classification Model Overview (final result)
 
 Inputs
-- **Image**: Shape `(224, 224, 3)` - processed through **ResNet10 layers**.
-- **Metadata**: Shape `(8)` - processed through **Dense layers**.
+- **Image**: `(224, 224, 3)` - processed through **ResNet10**.
+- **Metadata**: `(8)` - processed through **Dense layers**.
 
 Architecture
-1. **Image Branch (ResNet10)**:
-   - 4 stages of `BasicBlock`.
-   - Global Average Pooling.
-   - Output: 512-dimensional feature vector.
-2. **Metadata Branch**:
-   - Dense layers:
-     - `Linear(128) -> ReLU -> Dropout(0.5)`
-     - `Linear(64) -> ReLU`.
-3. **Fusion Layer**:
-   - Combines image and metadata features.
-   - Dense layers:
-     - `Linear(128) -> ReLU -> Dropout(0.5)`
-     - `Linear(num_classes)`.
+- **Image Branch**: ResNet10 with 512-dimensional output.
+- **Metadata Branch**: Dense layers with ReLU and Dropout.
+- **Fusion Layer**: Combines features from both branches for classification.
 
 Hyperparameters
 - **Optimizer**: `AdamW`
@@ -51,32 +41,31 @@ Frameworks Used
 
 ### Basic CNN Model Overview
 
-Inputs
-- **Image**: Shape `(128, 128, 3)` - processed through **CNN layers**.
-- **Metadata**: Shape `(19)` - processed through **DNN layers**.
+- **Inputs**: Image `(128, 128, 3)` via CNN, Metadata via DNN.  
+- **Architecture**: 3 Conv2D + pooling (CNN), 2 dense layers + dropout (DNN).  
+- **Hyperparameters**: Adam, Categorical Crossentropy, 40 epochs, batch size 32.  
+- **Results**: Accuracy ~75.95%, Loss ~0.6313.  
+- **Frameworks**: TensorFlow/Keras, Pandas, NumPy, Scikit-learn.  
 
-Architecture
-1. **CNN**:
-   - 3 Conv2D layers with pooling and global average pooling.
-2. **DNN**:
-   - 2 dense layers with dropout (`0.5`).
+---
 
-Hyperparameters
-- **Optimizer**: `Adam`
-- **Loss Function**: `Categorical Crossentropy`
-- **Training Settings**: 
-  - `40` epochs
-  - Batch size: `32`
+### ResNet15 Model Overview
 
-Results
-- **Accuracy**: ~**75.95%**
-- **Loss**: ~**0.6313**
+- **Inputs**: Image `(224, 224, 3)` via ResNet18, Metadata via DNN.  
+- **Architecture**: Pretrained ResNet18 (CNN), 2 dense layers (DNN), fusion layer for combined features.  
+- **Hyperparameters**: Adam, CrossEntropyLoss, 10 epochs, batch size 32.  
+- **Results**: Accuracy ~79.23%, Loss ~0.5984.  
+- **Frameworks**: PyTorch, Torchvision, scikit-learn.
+   
+---
 
-Frameworks Used
-- **TensorFlow/Keras**
-- **Pandas**
-- **NumPy**
-- **Scikit-learn**
+### ResNet50 Model Overview
+
+- **Inputs**: Image `(124, 124, 3)` via ResNet50, Metadata `(5)` via DNN.  
+- **Architecture**: Pretrained ResNet50, 2 dense layers (DNN), fusion layer for combined features.
+- **Hyperparameters**: Adam, Categorical Crossentropy, 5 epochs, batch size 32.  
+- **Results**: Accuracy ~72.09%, Loss ~0.8577.  
+- **Frameworks**: TensorFlow/Keras, Pandas, NumPy, Scikit-learn.  
 
 ---
 Resnet, Efficientnet,CNN from scratch
