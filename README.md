@@ -54,7 +54,10 @@ Run the ```final_notebook.ipynb``` to download the dataset and to train model.
 
 ### 4. Try it with the UI
 
-Go to backend folder and edit ```app.py```. Replace ```final_model.pth``` with your previously trained model. Run ```app.py``` locally to test your model.
+Go to backend folder and edit ```app.py```. Replace ```final_model.pth``` with your previously trained and saved model. To test your model, run ```app.py``` locally with: 
+```bash 
+python3 app.py
+```
 
 ### 5. Enjoy!
 
