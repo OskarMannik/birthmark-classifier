@@ -8,9 +8,9 @@ import pandas as pd
 from model_def import MultimodalModel  # Ensure your model definition is imported
 
 # File paths
-model_path = "./models/final_model.pth"       # Path to your trained model
-metadata_path = "./data/test_metadata.csv"            # Path to your test metadata
-images_folder = "./data/resized_test_images/"         # Folder containing test images
+model_path = "./../models/best_multimodal_model.pth"       # Path to your trained model
+metadata_path = "./../data/test_metadata.csv"            # Path to your test metadata
+images_folder = "./../data/resized_test_images/"         # Folder containing test images
 
 # Label map for interpretation (use your label mapping)
 label_map = {
@@ -105,9 +105,7 @@ predicted_labels = [label_map[class_id.item()] for class_id in predicted_classes
 # Add predictions to metadata
 metadata['predicted_label'] = predicted_labels
 
-# Save results
-metadata.to_csv("test_results.csv", index=False)
-print("Results saved to test_results.csv")
+
 
 # Display results
 print(metadata[['image_id', 'age', 'sex', 'localization', 'predicted_label']])

@@ -8,9 +8,18 @@ import pandas as pd
 from model_def import MultimodalModel
 import os
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = './frontend/static/uploads'
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+# Get the absolute path to the project root directory
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Initialize Flask app with correct template and static folders
+app = Flask(__name__,
+            template_folder=os.path.join(PROJECT_ROOT, 'frontend', 'templates'),
+            static_folder=os.path.join(PROJECT_ROOT, 'frontend', 'static'))
+
+# Configure upload folder
+UPLOAD_FOLDER = os.path.join(PROJECT_ROOT, 'frontend', 'static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def load_model():
     # Label map for interpretation
@@ -21,10 +30,13 @@ def load_model():
     
     # Model setup
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    num_tabular_features = 19  # Your total features
+    num_tabular_features = 19
     num_classes = len(label_map)
     model = MultimodalModel(num_tabular_features, num_classes).to(device)
-    model.load_state_dict(torch.load("final_model.pth", map_location=device, weights_only=True))
+    
+    # Update model path
+    model_path = os.path.join(PROJECT_ROOT, 'models', 'final_model.pth')
+    model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     model.eval()
     
     return model, label_map, device
