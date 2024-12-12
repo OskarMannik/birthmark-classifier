@@ -29,7 +29,7 @@ def load_model():
     num_classes = len(label_map)
     model = MultimodalModel(num_tabular_features, num_classes).to(device)
     
-    model_path = os.path.join(PROJECT_ROOT, 'models', 'final_model.pth')
+    model_path = os.path.join(PROJECT_ROOT, 'models', 'best_multimodal_model.pth')
     model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     model.eval()
     
@@ -58,7 +58,8 @@ def process_inputs(image_path, age, sex, localization):
     ]
     
     total_categorical_features = len(sex_categories) + len(localization_categories)
-    placeholder_features_needed = 19 - (1 + total_categorical_features) 
+    expected_total_features = 19
+    placeholder_features_needed = expected_total_features - (1 + total_categorical_features)  # Subtract 1 for 'age'
     
     for i in range(4, 4 + placeholder_features_needed):
         data[f'feature_{i}'] = 0 
@@ -99,7 +100,7 @@ def predict():
     
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
     image_file.save(image_path)
-    print(image_path)
+    #print(image_path)
     
     model, label_map, device = load_model()
     
@@ -110,8 +111,11 @@ def predict():
     
     with torch.no_grad():
         outputs = model(image_tensor, tabular_tensor)
+
         probabilities = torch.softmax(outputs, dim=1)
         _, predicted_class = torch.max(outputs, 1)
+        #print(probabilities)
+
     
     prediction = label_map[predicted_class.item()]
     probs_dict = {label_map[i]: prob.item() for i, prob in enumerate(probabilities[0])}
