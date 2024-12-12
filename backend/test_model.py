@@ -8,7 +8,7 @@ import pandas as pd
 from multimodalmodel import MultimodalModel  # Ensure your model definition is imported
 
 # File paths
-model_path = "./../models/best_multimodal_model.pth"       # Path to your trained model
+model_path = "./../models/final_model.pth"       # Path to your trained model
 metadata_path = "./../data/test_metadata.csv"            # Path to your test metadata
 images_folder = "./../data/resized_test_images/"         # Folder containing test images
 

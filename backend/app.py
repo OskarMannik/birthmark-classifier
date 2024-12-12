@@ -35,7 +35,7 @@ def load_model():
     
     return model, label_map, device
 
-def process_inputs(image_path, age, sex, localization): #image preprocessing
+def process_inputs(image_path, age, sex, localization):
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
@@ -43,29 +43,29 @@ def process_inputs(image_path, age, sex, localization): #image preprocessing
     ])
     
     image = Image.open(image_path).convert('RGB')
-    image_tensor = transform(image).unsqueeze(0) 
+    image_tensor = transform(image).unsqueeze(0)
     
-    # dataframe for tabular data
     data = pd.DataFrame({
         'age': [age],
         'sex': [sex],
         'localization': [localization]
     })
     
-    sex_categories = ['female', 'male']  
+    sex_categories = ['female', 'male']
     localization_categories = [
         'abdomen', 'back', 'chest', 'face', 'lower extremity',
         'neck', 'scalp', 'upper extremity'
     ]
     
-    # placeholder features
-    for i in range(4, 12): 
-        data[f'feature_{i}'] = 0
+    total_categorical_features = len(sex_categories) + len(localization_categories)
+    placeholder_features_needed = 19 - (1 + total_categorical_features) 
     
-    numerical_features = ['age'] + [f'feature_{i}' for i in range(4, 12)]
+    for i in range(4, 4 + placeholder_features_needed):
+        data[f'feature_{i}'] = 0 
+    
+    numerical_features = ['age'] + [f'feature_{i}' for i in range(4, 4 + placeholder_features_needed)]
     categorical_features = ['sex', 'localization']
     
-    # preprocessor with fixed categories
     preprocessor = ColumnTransformer(
         transformers=[
             ('num', StandardScaler(), numerical_features),
@@ -76,7 +76,6 @@ def process_inputs(image_path, age, sex, localization): #image preprocessing
         ]
     )
     
-    # tabular data processing
     tabular_features_data = preprocessor.fit_transform(data)
     tabular_tensor = torch.tensor(tabular_features_data, dtype=torch.float32)
     
@@ -100,6 +99,7 @@ def predict():
     
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
     image_file.save(image_path)
+    print(image_path)
     
     model, label_map, device = load_model()
     
