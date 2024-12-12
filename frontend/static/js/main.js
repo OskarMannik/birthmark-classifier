@@ -3,6 +3,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageInput = document.getElementById('image');
     const imagePreview = document.getElementById('image-preview');
     const results = document.getElementById('results');
+    const aboutBtn = document.getElementById('about-btn');
+    const modal = document.getElementById('about-modal');
+    const closeBtn = document.querySelector('.close-btn');
+
+    modal.style.display = 'none';
+
+    aboutBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 
     imageInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -47,3 +66,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 }); 
+

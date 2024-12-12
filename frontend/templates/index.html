@@ -1,45 +1,67 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="container">
-    <h1>Skin Lesion Classification</h1>
-    
-    <form id="prediction-form" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="image">Choose an image:</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
-            <div id="image-preview"></div>
-        </div>
-
-        <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" min="0" max="120" value="30" required>
-        </div>
-
-        <div class="form-group">
-            <label for="sex">Sex:</label>
-            <select id="sex" name="sex" required>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="localization">Localization:</label>
-            <select id="localization" name="localization" required>
-                {% for loc in localizations %}
-                <option value="{{ loc }}">{{ loc|title }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <button type="submit">Predict</button>
-    </form>
-
-    <div id="results" class="hidden">
-        <h2>Results</h2>
-        <p id="prediction"></p>
-        <div id="probabilities"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthmark classifier</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>BIRTHMARK CLASSIFIER</h1>
+        <button id="about-btn" class="about-btn">About</button>
     </div>
-</div>
-{% endblock %} 
+    
+    <div id="about-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>About Birthmark classifier</h2>
+            <p>The Birthmark classifier is a tool that classifies birthmarks into different types. It is made by Oskar Männik and Till Bösch for the Introduction to Data Science course at the University of Tartu.</p>
+            <p>For building the model, we used pretrained ResNet10 model for the image branch and a simple neural network for the tabular branch.</p>
+            <p>The dataset used for this project can be found <a href="https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000">here</a>.</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <form id="prediction-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="image">Choose an image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+                <div id="image-preview"></div>
+            </div>
+    
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" min="0" max="120" value="30" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="sex">Sex:</label>
+                <select id="sex" name="sex" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="localization">Localization:</label>
+                <select id="localization" name="localization" required>
+                    {% for loc in localizations %}
+                    <option value="{{ loc }}">{{ loc|title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    
+            <button type="submit">Predict</button>
+        </form>
+    
+        <div id="results" class="hidden">
+            <h2>Results</h2>
+            <p id="prediction"></p>
+            <div id="probabilities"></div>
+        </div>
+    </div>
+    
+    <script src="../static/js/main.js"></script>
+</body>
+</html> 
