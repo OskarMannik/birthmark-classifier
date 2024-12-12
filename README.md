@@ -8,34 +8,14 @@ Skin cancer affects thousands of individuals each year, with over 1,000 cases re
 
 ## 📚 **Approaches we used**
 
-### Multimodal Skin Cancer Classification Model Overview (final result)
 
-Inputs
-- **Image**: `(224, 224, 3)` - processed through **ResNet10**.
-- **Metadata**: `(8)` - processed through **Dense layers**.
+### Multimodal Skin Cancer Classification Model Overview
 
-Architecture
-- **Image Branch**: ResNet10 with 512-dimensional output.
-- **Metadata Branch**: Dense layers with ReLU and Dropout.
-- **Fusion Layer**: Combines features from both branches for classification.
-
-Hyperparameters
-- **Optimizer**: `AdamW`
-- **Loss Function**: `Focal Loss` (`alpha=1, gamma=2`)
-- **Learning Rate Scheduler**: `StepLR` (reduce LR by 10% every 5 epochs)
-- **Training Settings**: 
-  - `20` epochs
-  - Batch size: `32`
-
-Results
-- **Test Accuracy**: ~**75.99%**
-- **Test Loss**: ~**0.1563**
-
-Frameworks Used
-- **PyTorch/Torchvision**
-- **Scikit-learn**
-- **Pandas**
-- **PIL**
+- **Inputs**: Image `(224, 224, 3)` via ResNet10, Metadata `(8)` via Dense layers.  
+- **Architecture**: ResNet10 (Image Branch, 512 output), Dense layers + ReLU + Dropout (Metadata Branch), Fusion layer for classification.  
+- **Hyperparameters**: AdamW, Focal Loss (`alpha=1, gamma=2`), StepLR (10% LR reduction every 5 epochs), 20 epochs, batch size 32.  
+- **Results**: Accuracy ~75.99%, Loss ~0.1563.  
+- **Frameworks**: PyTorch/Torchvision, Scikit-learn, Pandas, PIL.  
 
 ---
 
