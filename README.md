@@ -86,15 +86,6 @@ Skin cancer affects thousands of individuals each year, with over 1,000 cases re
 - **Frameworks**: Matplotlib, Seaborn, Pandas.  
 
 ---
-Resnet, Efficientnet,CNN from scratch
-Image preprocessing (size)
-Different optimizers and parameters
-Weights adjustment
-Tensorflow, pytorch
-Undersampling, oversampling
-Scheduler
-Focal Loss
-
 
 
 ## 📂 **Guide to the Contents of the Repository**
